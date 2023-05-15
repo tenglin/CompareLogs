@@ -1,0 +1,37 @@
+source_file: "key_src_error_warning.log"
+target_file: "key_small_error_warning.log"
+output_file: "out_key_src_error_warning.log"
+
+#max_count_of_same_lines: 18
+#delete_when_meet_max_same: True
+
+omit_regexp:
+  - 'MessageQueue\: too many messages'
+  - 'bt_l2cap\: L2CAP \- PSM: .* not found for deregistration'
+  - 'bt_l2cap\: L2CAP \- L2CA_Deregister\(\) called for PSM'
+  - '\s+qti_glink_charger\:'
+  - 'healthd\s+.*\s+battery\s+.* chg.*'
+
+same_regexp:
+  # all same
+  - [ '=', '(.*)', 10, True ]
+  # part same
+  - [ '&','.?TEE.?\s+\:\s+.*fingerprint(.*)', 10, True ]
+  # almost like similar_regexp, but performance is slow
+  #- [ '+','(healthd\s+).*(\s+battery\s+).* (chg).*', 30, True ]
+  #- [ '+','( qti_glink_charger).*', 30, True ]
+
+similar_regexp:
+  - [ '+', 'healthd\s+.*\s+battery\s+.* chg.*', 30 , False ]
+
+cut_regexp:
+  - ['#', '[^0-9a-zA-Z]0x[0-9a-fA-F]+|[^0-9a-zA-Z]0000[0-9a-fA-F]+|[0-9]+', 30, True]
+  #- ['#', '[^0-9a-zA-Z]0x[0-9a-fA-F]+[^0-9a-zA-Z]||[0-9]+', 30, True]
+  # - ['#', '[^0-9a-zA-Z]0x[0-9a-fA-F]+[^0-9a-zA-Z]|[0-9]+', '', 30, True]
+bad_log_time:
+  - [05-05 09:55:46.477, 05-05 09:55:48.001]
+  - [05-05 01:55:11.410, 05-05 01:55:15.922]
+
+good_log_time:
+  - [05-05 09:55:46.477, 05-05 09:55:48.922]
+  - [05-05 09:55:46.477, 05-05 09:55:48.922]
